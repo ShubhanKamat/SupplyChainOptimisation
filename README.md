@@ -9,6 +9,7 @@ This project requires two configuration files:
 1. `config.json`: Contains sensitive information.
 
 2. `environment.yml`: Specifies the Python environment for this project.
+
 **Note:** For security reasons, `config.json` and `environment.yml` are not included in this repository.
 
 ## Table of Contents
