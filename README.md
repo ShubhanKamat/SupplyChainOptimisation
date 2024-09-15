@@ -1,6 +1,6 @@
-# Retail Demand Forecasting using deep learning
+# FMCG Supply chain Analysis using Machine Learning
 
-This repository contains a production-ready Flask app, as well as a detailed model training notebook for serving a CNN model trained to predict the sales of SKUs offered by a restaurant
+This repository contains a production-ready Flask app, as well as a detailed model training notebook for serving a Random Forest Regressor model trained on comprehensive information related to the instant noodles business of a leading FMCG company.
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -15,11 +15,11 @@ This repository contains a production-ready Flask app, as well as a detailed mod
 
 ## Project Overview
 
-This project is designed to serve a CNN model trained to forecast the demand of a particular SKU from a restaurant via a Flask API, which can be deployed using a Docker container. A detailed data exploration and model training notebook is available in the 'notebooks' folder. The raw data is available under the 'data' folder. The data was sourced from kaggle. The three files cover 3 years worth of sales data for a fictional restaurant.
-
+This project is designed to serve a a Random Forest Regressor model trained on comprehensive information related to the instant noodles business of a leading FMCG company
+ via a Flask API, as well as provides scripts for training the model using the azure python sdk. A detailed data exploration and model training notebook is available in the 'notebook' folder. The raw data is available under the 'data' folder. The data was sourced from kaggle. 
+ 
 In addition to serving the model, the repository includes:
 - **Transformation Pipeline:** To preprocess the data for models.
-- **Prediction Pipeline:** To make predictions and adjust them based on seasonal and trend adjustments
 
 
 ## Folder Structure
@@ -30,31 +30,36 @@ project-root/
 ├── app/                      # Flask app
 │   ├── __init__.py            # Initializes the app
 │   ├── app.py                 # Flask API for serving models
-│   ├── predictor.py           # Prediction scripts
 │   ├── transformation.py      # Data preprocessing steps
 │
+├── Azure ML/                      # Directory with the files for Azure python SDK code
+│   ├── data/                      # Dataset directory
+|        ├── FMCG_data.csv         # Dataset
+|   ├── outputs/                   #joblib file with the model
+│   ├── run_experiment.py          # Script to run the experiment on Azure ML
+│   ├── train.py                   # Training script
+|
 ├── data/                      # Data storage 
-│   ├── items.csv                  # Raw data files
-│   ├── restaurants.csv           
-│   ├── sales_train.csv            
+│   ├── FMCG_data.csv                  # Raw data file        
 │
 ├── models/                    # Model training scripts
-│   ├── forecastingmodel.h5         # Trained model
+│   ├── random_forest_regressor.pkl         # Trained ML model
+|   ├── imputer.pkl                         #Imputing data
+|   ├── transformer.pkl                     # for preprocessing
 │
 ├── scripts/                   # Helper scripts for running app & pipelines
 │   ├── run_app.sh             # Start the Flask app
 │
-├── notebooks/                 # Jupyter notebooks for EDA & experiments
+├── notebook/                 # Jupyter notebooks for EDA & experiments
 │   └── Model_trainer.ipynb
 │
-├── Dockerfile                 # Dockerfile for production deployments
 ├── requirements.txt           # Python package requirements
 ├── README.md                  # Project documentation
 └── wsgi.py                    # WSGI entry point for production deployment
 ```
 ## Features
 
-- **Model Serving:** Serve a trained CNN model via a Flask API.
+- **Model Serving:** Serve a trained Random Forest Regressor via a Flask API.
 - **Data Transformation:** Preprocess data to prepare it for model inference.
 - **Modular Architecture:** Clear separation of concerns for transformation, and model serving.
 - **Scalable:** Ready for deployment in production environments (WSGI, Docker, etc.).
@@ -64,8 +69,8 @@ project-root/
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/ShubhanKamat/DemandForecasting.git
-    cd DemandForecasting
+    git clone https://github.com/ShubhanKamat/SupplyChainOptimisation.git
+    cd SupplyChainOptimisation
     ```
 
 2. **Set Up Python Virtual Environment**
@@ -108,21 +113,21 @@ The Flask app exposes a route for interacting with the model. The model is prelo
 
 **Endpoint:**
 
-- `POST /predict`: Predicts using the CNN model.
+- `POST /predict`: Predicts using the regressor model post preprocessing.
 
 
 **Example Request:**
 
 ```bash
 curl -X POST http://127.0.0.1:5000/predict -H "Content-Type: application/json" -d '{
-    "data": [your_time_series_data]
+    "data": [your_data]
 }'
 ```
 ## Response
 
 ```json
 {
-  "prediction": [ predicted_values ]
+  "prediction": [ predicted_value ]
 }
 ```
 
@@ -143,22 +148,7 @@ Gunicorn Deployment Example:
 ```bash
 gunicorn --bind 0.0.0.0:8000 wsgi:app
 ```
-For Docker deployment, use the given Dockerfile and containerize the application.
-
-Building and Running the Docker Container
-
-1. Build the Docker Image:
-
-```bash
-docker build -t DemandForecasting .
-```
-2. Run the Docker Container:
-
-```bash
-docker run -d -p 5000:5000 DemandForecasting
-```
-
-The app will be accessible at http://localhost:5000 on your local machine.
+The app will be accessible at http://localhost:8000 on your local machine.
 
 You can test the endpoints using curl or Postman.
 
