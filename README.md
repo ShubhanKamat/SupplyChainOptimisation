@@ -151,7 +151,7 @@ python app/transformation.py
 ```
 
 ## Deployment
-This app is ready for production deployment using WSGI servers like Gunicorn or uWSGI.
+This app is ready for deployment using WSGI servers like Gunicorn or uWSGI.
 
 Gunicorn Deployment Example:
 
