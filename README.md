@@ -1,4 +1,4 @@
-# FMCG Supply chain Analysis using Machine Learning and Azure ML
+# SKU Demand Analysis using Machine Learning 
 
 This repository contains a Flask app, as well as a model training notebook for serving a Random Forest Regressor model trained on comprehensive information related to the instant noodles business of a leading FMCG company.
 
